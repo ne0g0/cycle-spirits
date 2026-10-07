@@ -1,0 +1,298 @@
+/* Cycle Spirits — homepage
+   Brand kit: the Two Seasons palette, Plantin for display and Gibson Book for body
+   (Newsreader and Figtree stand in where those are not installed).
+   The hero turns between two faces: day (Rubycello) and night (Pecaño).
+   Every colour that changes with the turn lives on [data-theme]. */
+
+:root {
+  --bone: #F2EBD9; --parchment: #CBBA9B; --walnut: #1C1813; --sage: #829775; --bottle: #506941;
+  --forest: #30442D; --pecano: #4F200F; --ruby: #DB7996; --coral: #FB9F88; --slate: #393F46;
+  --grey: #E5DDD4; --blush: #F6D9D5; --dusk: #2A1F18;
+  --display: "Plantin MT Pro", Plantin, Newsreader, Georgia, serif;
+  --body: Gibson, Figtree, system-ui, -apple-system, sans-serif;
+  --nav-h: 72px;
+  --side: clamp(16px, 2.5vw, 24px);
+  --turn: 1.4s;
+  --ease: cubic-bezier(.45, 0, .2, 1);
+}
+
+/* Day: Rubycello in front. */
+:root[data-theme="day"] {
+  color-scheme: light;
+  --ground: var(--blush);
+  --ink: var(--walnut);
+  --muted: #6E5A54;
+  --line: rgba(28, 24, 19, .16);
+  --accent: var(--forest);
+  --accent-ink: var(--bone);
+  --card: rgba(242, 235, 217, .78);
+  --disc-hi: #F9E8E4;
+  --disc-lo: #E7C3BC;
+  --disc-shadow: rgba(79, 32, 15, .22);
+  --field-wash: rgba(246, 217, 213, .64);
+  --sun-on: 1;
+  --moon-on: .26;
+}
+/* Night: Pecaño in front. */
+:root[data-theme="night"] {
+  color-scheme: dark;
+  --ground: var(--dusk);
+  --ink: var(--bone);
+  --muted: var(--parchment);
+  --line: rgba(242, 235, 217, .18);
+  --accent: var(--sage);
+  --accent-ink: var(--walnut);
+  --card: rgba(28, 24, 19, .72);
+  --disc-hi: #3B2C22;
+  --disc-lo: #1C1410;
+  --disc-shadow: rgba(0, 0, 0, .5);
+  --field-wash: rgba(42, 31, 24, .68);
+  --sun-on: .2;
+  --moon-on: 1;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--ground); transition: background-color var(--turn) var(--ease); scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: clamp(1rem, .95rem + .25vw, 1.125rem);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--turn) var(--ease), color var(--turn) var(--ease);
+}
+h1, h2, h3, p, figure, ul { margin: 0; }
+ul { list-style: none; padding: 0; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; letter-spacing: -.005em; text-wrap: balance; }
+h2 { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem); line-height: 1.1; }
+.eyebrow { font: 500 .75rem/1.4 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); transition: color var(--turn) var(--ease); }
+.wrap { width: calc(100% - 2 * var(--side)); max-width: 1200px; margin-inline: auto; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: 16px; top: -48px; z-index: 50; padding: 10px 14px; background: var(--accent); color: var(--accent-ink); border-radius: 2px; text-decoration: none; }
+.skip:focus-visible { top: 12px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Buttons, from the Two Seasons direction */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 500 .9375rem/1 var(--body); padding: 14px 22px; border-radius: 2px;
+  border: 1px solid currentColor; background: transparent; color: inherit;
+  text-decoration: none; cursor: pointer;
+  transition: color .15s, background-color .15s, border-color .15s;
+}
+.btn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.btn-sm { padding: 9px 14px; font-size: .875rem; }
+.btn-quiet { border-color: var(--line); color: var(--muted); }
+.btn-quiet:hover { color: var(--ink); border-color: currentColor; background: transparent; }
+.btn-fill { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn-fill:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); }
+
+/* ---------- Header ---------- */
+.site-head { position: relative; z-index: 10; }
+.nav {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  min-height: var(--nav-h); padding: 12px var(--side); gap: 16px 24px;
+}
+.nav-links { display: flex; gap: clamp(16px, 2.5vw, 32px); font-weight: 500; font-size: .9375rem; }
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { color: var(--accent); }
+.nav-left { justify-self: end; }
+.nav-end { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 32px); justify-self: stretch; }
+.nav-end .nav-links { margin-right: clamp(8px, 2vw, 24px); }
+.nav-cta { margin-left: auto; }
+.brand { display: inline-flex; align-items: flex-end; gap: 12px; text-decoration: none; color: var(--ink); }
+.brand .mark { width: 36px; height: 34px; align-self: center; }
+.brand .word { height: auto; }
+.brand .word-cycle { width: 96px; }
+.brand .word-spirits { width: 96px; }
+
+/* ---------- Hero: the lazy Susan ---------- */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: calc(100svh - var(--nav-h));
+  display: grid; grid-template-rows: 1fr auto; justify-items: center; align-content: center;
+  padding: 8px var(--side) 24px;
+}
+.sky { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.body {
+  position: absolute; left: 0; top: 0;
+  width: clamp(150px, 26vmin, 320px); aspect-ratio: 1;
+  transform: translate(-200%, -200%);
+  will-change: transform;
+  transition: opacity var(--turn) var(--ease);
+}
+.body svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.sun { opacity: var(--sun-on); }
+.moon { opacity: var(--moon-on); }
+.sun-rays { fill: var(--ruby); }
+.sun-disc { fill: var(--coral); }
+.sun-core { fill: #FCC1AE; }
+.moon-glow { fill: rgba(242, 235, 217, .10); }
+.moon-disc { fill: var(--bone); }
+.moon-craters { fill: var(--parchment); opacity: .6; }
+
+.stage {
+  /* Geometry, as fractions of the stage width W. js/hero.js reads these. */
+  --stage-aspect: .66;      /* stage height = W * aspect */
+  --table-h: .42;           /* the table svg is W wide and .42W tall, pinned to the bottom */
+  --disc-cy: .20;           /* disc centre, from the top of the table svg */
+  --ring-rx: .36; --ring-ry: .115;   /* the bottles' orbit */
+  --bottle-h: .34;          /* front bottle height */
+  --back-scale: .58;        /* size at the back of the table */
+  --glass-h: .17;
+  --sky-cy: .52; --sky-ry: .46; --sky-rx-extra: .05; --sky-scale-min: .78;
+  position: relative; z-index: 1;
+  width: min(1180px, 100%, calc((100svh - var(--nav-h) - 150px) * 1.5));
+  aspect-ratio: 1 / var(--stage-aspect);
+}
+.table { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; z-index: 1; overflow: visible; }
+.disc-hi { stop-color: var(--disc-hi); transition: stop-color var(--turn) var(--ease); }
+.disc-lo { stop-color: var(--disc-lo); transition: stop-color var(--turn) var(--ease); }
+.disc-shadow { fill: var(--disc-shadow); filter: url(#f-soft); transition: fill var(--turn) var(--ease); }
+.disc-rim { stroke: var(--line); stroke-width: 1.5; transition: stroke var(--turn) var(--ease); }
+
+.glass {
+  position: absolute; left: 50%; z-index: 3;
+  height: calc(var(--W, 1000px) * var(--glass-h));
+  aspect-ratio: 220 / 260;
+  /* base sits a touch below the disc centre */
+  bottom: calc(var(--table-h) * var(--W, 1000px) - var(--disc-cy) * var(--W, 1000px) - .02 * var(--W, 1000px));
+  transform: translateX(-50%) scale(.92);
+  opacity: 0; visibility: hidden;
+  transition: opacity .7s var(--ease), transform .7s var(--ease), visibility 0s .7s;
+  pointer-events: none;
+}
+.glass.is-on { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); transition: opacity .7s var(--ease) .25s, transform .7s var(--ease) .25s, visibility 0s; }
+.glass svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.glass-body { fill: rgba(255, 255, 255, .14); stroke: var(--ink); stroke-opacity: .5; stroke-width: 2.5; }
+.glass-rim { stroke: var(--ink); stroke-opacity: .5; stroke-width: 2.5; }
+.glass-shine { stroke: rgba(255, 255, 255, .55); stroke-width: 3; }
+.glass-ice { fill: rgba(255, 255, 255, .42); stroke: rgba(255, 255, 255, .7); stroke-width: 1.5; }
+.glass-peel { stroke: var(--coral); }
+.glass-stem { stroke: var(--ink); stroke-opacity: .5; stroke-width: 7; }
+.glass-foot { fill: rgba(255, 255, 255, .18); stroke: var(--ink); stroke-opacity: .5; stroke-width: 2.5; }
+
+.bottle {
+  position: absolute; left: 0; top: 0; z-index: 2;
+  margin: 0; padding: 0; border: 0; background: none; cursor: pointer;
+  transform-origin: 50% 100%;
+  transform: translate(-200%, -200%);
+  will-change: transform;
+  opacity: 0;
+  border-radius: 6px;
+}
+.hero.is-ready .bottle { opacity: 1; }
+.bottle img { height: calc(var(--W, 1000px) * var(--bottle-h)); width: auto; position: relative; z-index: 1; filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .22)); }
+.bottle::after {
+  content: ""; position: absolute; left: 50%; bottom: -1.5%; width: 130%; height: 5%;
+  transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .34), rgba(0, 0, 0, 0) 70%);
+}
+.bottle-name {
+  position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+  margin-top: 10px; white-space: nowrap;
+  font: italic 500 1.0625rem/1 var(--display); color: var(--ink);
+  transition: color var(--turn) var(--ease);
+}
+.bottle[data-pos="front"] { cursor: default; }
+.bottle:focus-visible { outline-offset: 8px; }
+
+.tagline { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; z-index: 5; overflow: visible; pointer-events: none; }
+.tagline-text { font: italic 500 40px var(--display); fill: var(--ink); letter-spacing: .01em; transition: fill var(--turn) var(--ease); }
+
+/* The serve beside the front bottle */
+.serves { position: absolute; z-index: 6; left: var(--side); top: 50%; width: min(300px, 26%); transform: translateY(-20%); }
+.serve {
+  position: absolute; inset: 0 auto auto 0; width: 100%;
+  padding: 22px 24px; border-radius: 2px;
+  background: var(--card); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: grid; gap: 10px; justify-items: start;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease), background-color var(--turn) var(--ease), visibility 0s .6s;
+}
+.serve.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .6s var(--ease) .3s, transform .6s var(--ease) .3s, background-color var(--turn) var(--ease), visibility 0s; }
+.serve h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); }
+.recipe { display: grid; gap: 4px; font-size: .9375rem; color: var(--muted); transition: color var(--turn) var(--ease); }
+.recipe li { padding-left: 14px; position: relative; }
+.recipe li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.more { font-weight: 500; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; font-size: .9375rem; }
+.more:hover { color: var(--accent); }
+
+.turn-controls { position: absolute; right: var(--side); bottom: 20px; z-index: 6; display: flex; gap: 8px; }
+.turn-controls .btn { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: var(--card); }
+.turn-controls .btn:hover { background: var(--card); color: var(--accent); }
+
+/* ---------- Story: the origin ---------- */
+.story { position: relative; overflow: hidden; isolation: isolate; padding: clamp(96px, 12vw, 176px) 0; }
+.story-field { position: absolute; inset: -14% 0; z-index: 0; }
+.story-field::after { content: ""; position: absolute; inset: 0; background: var(--field-wash); transition: background-color var(--turn) var(--ease); }
+.story-field::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(var(--ground) 0%, transparent 22%, transparent 78%, var(--ground) 100%);
+  transition: background var(--turn) var(--ease);
+}
+.story-bg { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+.story-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; align-items: center; }
+.story-stack { grid-column: 1 / 7; position: relative; aspect-ratio: 5 / 6; }
+.float { position: absolute; margin: 0; overflow: hidden; border-radius: 2px; box-shadow: 0 30px 60px -28px rgba(0, 0, 0, .55); will-change: transform; }
+.float img { width: 100%; height: 100%; object-fit: cover; }
+.float-a { left: 0; top: 10%; width: 54%; aspect-ratio: 3 / 4; }
+.float-b { left: 50%; top: 0; width: 42%; aspect-ratio: 2 / 3; }
+.float-c { left: 26%; top: 56%; width: 50%; aspect-ratio: 1; }
+.story-text {
+  grid-column: 8 / 13; display: grid; gap: 18px; justify-items: start;
+  padding: clamp(24px, 3vw, 40px); border-radius: 2px;
+  background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: background-color var(--turn) var(--ease);
+}
+.story-text p { max-width: 46ch; }
+.story-text .btn { margin-top: 6px; }
+
+/* ---------- Footer ---------- */
+.site-foot { border-top: 1px solid var(--line); padding: 32px 0 40px; transition: border-color var(--turn) var(--ease); }
+.foot-row { display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: baseline; justify-content: space-between; }
+.contact { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.contact a { text-decoration: none; }
+.contact a:hover { color: var(--accent); text-decoration: underline; }
+.site-line { font: italic 1.0625rem/1.4 var(--display); color: var(--muted); transition: color var(--turn) var(--ease); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .stage { --ring-rx: .37; --bottle-h: .36; }
+  .serves { width: min(260px, 28%); }
+}
+@media (max-width: 760px) {
+  .nav { grid-template-columns: 1fr auto; row-gap: 10px; }
+  .nav-left { display: none; }
+  .brand { grid-column: 1; justify-self: start; }
+  .nav-end { grid-column: 2; justify-self: end; }
+  .nav-end .nav-links { display: none; }
+  .brand .word-cycle, .brand .word-spirits { width: 72px; }
+  .hero { grid-template-rows: auto auto auto; align-content: start; row-gap: 20px; padding-bottom: 28px; }
+  .stage {
+    --stage-aspect: .82; --ring-rx: .36; --ring-ry: .14; --bottle-h: .46; --back-scale: .6; --glass-h: .23;
+    --sky-cy: .42; --sky-ry: .40;
+    width: 100%;
+  }
+  .tagline-text { font-size: 46px; }
+  .body { width: 34vmin; }
+  .serves { position: relative; left: auto; top: auto; width: 100%; transform: none; display: grid; }
+  .serve { position: relative; grid-area: 1 / 1; }
+  .turn-controls { position: relative; right: auto; bottom: auto; justify-content: center; }
+}
+@media (max-width: 760px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .story-stack, .story-text { grid-column: 1; }
+  .story-stack { aspect-ratio: 4 / 5; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html, body, .eyebrow, .serve, .glass, .bottle-name, .tagline-text, .recipe, .story-text, .story-field::after, .story-field::before, .site-line, .site-foot, .disc-hi, .disc-lo, .disc-shadow, .disc-rim, .body { transition-duration: .01s !important; transition-delay: 0s !important; }
+  .float, .story-bg { transform: none !important; }
+}
