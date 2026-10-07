@@ -16,8 +16,8 @@
   --ease: cubic-bezier(.45, 0, .2, 1);
 }
 
-/* Day: Rubycello in front. */
-:root[data-theme="day"] {
+/* Day: Rubycello in front. Also the default before the script sets a theme. */
+:root, :root[data-theme="day"] {
   color-scheme: light;
   --ground: var(--blush);
   --ink: var(--walnut);
@@ -278,7 +278,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
     --sky-cy: .42; --sky-ry: .40;
     width: 100%;
   }
-  .tagline-text { font-size: 46px; }
+  .tagline-text { font-size: 52px; }
   .body { width: 34vmin; }
   .serves { position: relative; left: auto; top: auto; width: 100%; transform: none; display: grid; }
   .serve { position: relative; grid-area: 1 / 1; }
