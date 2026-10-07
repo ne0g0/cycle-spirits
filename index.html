@@ -32,29 +32,18 @@
     <g class="moon-craters"><circle cx="-34" cy="-30" r="16"/><circle cx="26" cy="-6" r="10"/><circle cx="-8" cy="40" r="22"/><circle cx="48" cy="44" r="8"/><circle cx="44" cy="-52" r="6"/></g>
   </symbol>
 
-  <!-- The two serves in glass. Placeholders until the cocktail shoot; replace with photographs on transparent backgrounds. -->
-  <symbol id="cs-glass-rocks" viewBox="0 0 220 260">
-    <defs>
-      <linearGradient id="g-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A4A26"/><stop offset="1" stop-color="#4F200F"/></linearGradient>
-    </defs>
-    <path class="glass-liquid" fill="url(#g-amber)" d="M54 132 L58 228 Q58 240 70 240 L150 240 Q162 240 162 228 L166 132 Z"/>
-    <path class="glass-ice" d="M80 150 L130 140 L142 186 L92 198 Z"/>
-    <path class="glass-peel" d="M150 120 C176 118 184 146 170 164" fill="none" stroke-width="7" stroke-linecap="round"/>
-    <path class="glass-body" d="M40 22 L54 236 Q55 250 70 250 L150 250 Q165 250 166 236 L180 22 Z"/>
-    <path class="glass-rim" d="M40 22 Q110 36 180 22" fill="none"/>
-    <path class="glass-shine" d="M62 60 L68 214" fill="none" stroke-linecap="round"/>
-  </symbol>
-  <symbol id="cs-glass-cordial" viewBox="0 0 220 260">
-    <defs>
-      <linearGradient id="g-ruby" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FB9F88"/><stop offset="1" stop-color="#DB7996"/></linearGradient>
-    </defs>
-    <path class="glass-liquid" fill="url(#g-ruby)" d="M74 96 C74 126 84 148 110 150 C136 148 146 126 146 96 Z"/>
-    <path class="glass-body" d="M62 50 C58 110 80 154 110 156 C140 154 162 110 158 50 Z"/>
-    <path class="glass-rim" d="M62 50 Q110 60 158 50" fill="none"/>
-    <path class="glass-stem" d="M110 156 L110 226"/>
-    <path class="glass-foot" d="M66 238 Q110 224 154 238 Q110 252 66 238 Z"/>
-    <path class="glass-shine" d="M76 70 C76 100 84 126 96 140" fill="none" stroke-linecap="round"/>
-  </symbol>
+  <!-- Shared glass rendering: body, base and stem gradients, liquid and stream colours, soft filters. The two glasses beside the bottles reference these. -->
+  <defs>
+    <linearGradient id="g-glass-body" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".16" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#fff" stop-opacity=".04"/><stop offset=".84" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#fff" stop-opacity=".32"/></linearGradient>
+    <linearGradient id="g-glass-base" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".35" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
+    <linearGradient id="g-stem" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity=".34"/></linearGradient>
+    <linearGradient id="liq-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9A5B2E"/><stop offset=".55" stop-color="#6B331A"/><stop offset="1" stop-color="#3E1A0C"/></linearGradient>
+    <linearGradient id="liq-ruby" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDB39C"/><stop offset=".6" stop-color="#EF8F96"/><stop offset="1" stop-color="#D96F8E"/></linearGradient>
+    <linearGradient id="stream-amber" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6B331A" stop-opacity=".15"/><stop offset=".5" stop-color="#8A4A26"/><stop offset="1" stop-color="#6B331A" stop-opacity=".15"/></linearGradient>
+    <linearGradient id="stream-ruby" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EF8F96" stop-opacity=".15"/><stop offset=".5" stop-color="#F7A49A"/><stop offset="1" stop-color="#EF8F96" stop-opacity=".15"/></linearGradient>
+    <filter id="f-soft2" x="-40%" y="-10%" width="180%" height="120%"><feGaussianBlur stdDeviation="1.4"/></filter>
+    <filter id="f-soft6" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
 </svg>
 
 <a class="skip" href="#story">Skip to the story</a>
@@ -82,7 +71,7 @@
 
 <main id="top">
 
-  <!-- HERO: the lazy Susan. Two bottles orbit a centred glass; the sun and moon ride a larger ring behind the table; the page theme turns with them. Geometry lives in CSS custom properties on .stage and is read by js/hero.js. -->
+  <!-- HERO: the lazy Susan. Each bottle and its glass orbit the table as one setting; when a setting reaches the front the table rests and the glass pours; the sun and moon ride a larger ring behind the table; the page theme turns with them. Geometry lives in CSS custom properties on .stage and is read by js/hero.js. -->
   <section class="hero" data-turntable data-start="day" data-autoplay="7000" aria-labelledby="hero-title">
     <div class="sky" aria-hidden="true">
       <div class="body sun" data-body="sun" data-angle="0"><svg><use href="#cs-sun"/></svg></div>
@@ -96,21 +85,65 @@
           <path id="tagline-arc" d="M 20 200 A 480 190 0 0 0 980 200" fill="none"/>
           <filter id="f-soft" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="14"/></filter>
         </defs>
-        <ellipse class="disc-shadow" cx="500" cy="214" rx="452" ry="156"/>
-        <ellipse class="disc" cx="500" cy="200" rx="440" ry="150" fill="url(#g-disc)"/>
-        <ellipse class="disc-rim" cx="500" cy="200" rx="440" ry="150" fill="none"/>
+        <ellipse class="disc-shadow" cx="500" cy="214" rx="476" ry="156"/>
+        <ellipse class="disc" cx="500" cy="200" rx="465" ry="150" fill="url(#g-disc)"/>
+        <ellipse class="disc-rim" cx="500" cy="200" rx="465" ry="150" fill="none"/>
       </svg>
 
-      <div class="glass glass-cordial" data-for="rubycello" aria-hidden="true"><svg><use href="#cs-glass-cordial"/></svg></div>
-      <div class="glass glass-rocks" data-for="pecano" aria-hidden="true"><svg><use href="#cs-glass-rocks"/></svg></div>
-
-      <button class="bottle" type="button" data-orbit="rubycello" data-angle="30" aria-label="Turn the table">
-        <img src="assets/bottles/rubycello-bottle.png" width="280" height="862" alt="Rubycello bottle, mockup label" draggable="false">
-        <span class="bottle-name">Rubycello</span>
+      <button class="setting" type="button" data-orbit="rubycello" data-angle="30" aria-label="Turn the table">
+        <span class="bottle">
+          <img src="assets/bottles/rubycello-bottle.png" width="280" height="862" alt="Rubycello bottle, mockup label" draggable="false">
+          <span class="bottle-name">Rubycello</span>
+        </span>
+        <span class="glass glass-cordial" data-glass data-top="51" data-h="95" data-level=".66" data-st="-70" aria-hidden="true">
+          <svg viewBox="0 0 220 260" overflow="visible" focusable="false">
+            <defs><clipPath id="clip-cordial"><path d="M71 51 C68 108 90 144 110 146 C130 144 152 108 149 51 Z"/></clipPath></defs>
+            <ellipse class="g-shadow" cx="110" cy="246" rx="50" ry="6" filter="url(#f-soft6)"/>
+            <path class="g-tint" d="M66 46 C62 110 86 150 110 152 C134 150 158 110 154 46 Z"/>
+            <path class="g-body" fill="url(#g-glass-body)" d="M66 46 C62 110 86 150 110 152 C134 150 158 110 154 46 Z"/>
+            <g clip-path="url(#clip-cordial)">
+              <rect class="liquid" x="60" y="51" width="100" height="95" fill="url(#liq-ruby) #EF8F96"/>
+              <ellipse class="liquid-surface" cx="110" cy="51" rx="42" ry="4"/>
+            </g>
+            <rect class="stream" x="107" y="-70" width="6" height="0" rx="3" fill="url(#stream-ruby) #F7A49A"/>
+            <rect class="stream-core" x="109" y="-70" width="2" height="0" rx="1"/>
+            <path class="g-stem" fill="url(#g-stem)" d="M105 152 C103 180 103 202 102 226 L118 226 C117 202 117 180 115 152 Z"/>
+            <ellipse class="g-foot" cx="110" cy="236" rx="46" ry="10"/>
+            <ellipse class="g-foot-edge" cx="110" cy="236" rx="46" ry="10"/>
+            <path class="g-edge" d="M66 46 C62 110 86 150 110 152 C134 150 158 110 154 46"/>
+            <path class="g-hi" d="M78 62 C76 100 88 130 100 142" filter="url(#f-soft2)"/>
+            <path class="g-hi g-hi-2" d="M142 62 C144 100 134 128 124 140" filter="url(#f-soft2)"/>
+            <ellipse class="g-rim" cx="110" cy="46" rx="44" ry="5"/>
+            <ellipse class="g-rim-in" cx="110" cy="46" rx="39" ry="3"/>
+          </svg>
+        </span>
       </button>
-      <button class="bottle" type="button" data-orbit="pecano" data-angle="210" aria-label="Turn the table">
-        <img src="assets/bottles/pecano-bottle.png" width="430" height="862" alt="Pecaño bottle, mockup label" draggable="false">
-        <span class="bottle-name">Pecaño</span>
+      <button class="setting" type="button" data-orbit="pecano" data-angle="210" aria-label="Turn the table">
+        <span class="bottle">
+          <img src="assets/bottles/pecano-bottle.png" width="430" height="862" alt="Pecaño bottle, mockup label" draggable="false">
+          <span class="bottle-name">Pecaño</span>
+        </span>
+        <span class="glass glass-rocks" data-glass data-top="34" data-h="188" data-level=".62" data-st="-70" data-ice-drop="74" aria-hidden="true">
+          <svg viewBox="0 0 220 260" overflow="visible" focusable="false">
+            <defs><clipPath id="clip-rocks"><path d="M49 34 L60 214 Q61 222 70 222 L150 222 Q159 222 160 214 L171 34 Z"/></clipPath></defs>
+            <ellipse class="g-shadow" cx="110" cy="247" rx="72" ry="8" filter="url(#f-soft6)"/>
+            <path class="g-tint" d="M42 28 L54 232 Q55 244 67 244 L153 244 Q165 244 166 232 L178 28 Z"/>
+            <path class="g-body" fill="url(#g-glass-body)" d="M42 28 L54 232 Q55 244 67 244 L153 244 Q165 244 166 232 L178 28 Z"/>
+            <g clip-path="url(#clip-rocks)">
+              <rect class="liquid" x="40" y="34" width="140" height="188" fill="url(#liq-amber) #6B331A"/>
+              <ellipse class="liquid-surface" cx="110" cy="34" rx="64" ry="5"/>
+            </g>
+            <g class="ice"><g transform="rotate(-12 118 118)"><rect x="92" y="92" width="52" height="52" rx="4"/><path class="ice-hi" d="M97 102 L97 97 L128 97"/></g></g>
+            <rect class="stream" x="107" y="-70" width="6" height="0" rx="3" fill="url(#stream-amber) #8A4A26"/>
+            <rect class="stream-core" x="109" y="-70" width="2" height="0" rx="1"/>
+            <path class="g-base" fill="url(#g-glass-base)" d="M53 216 L54 232 Q55 244 67 244 L153 244 Q165 244 166 232 L167 216 Z"/>
+            <path class="g-edge" d="M42 28 L54 232 Q55 244 67 244 L153 244 Q165 244 166 232 L178 28"/>
+            <path class="g-hi" d="M58 44 L67 222" filter="url(#f-soft2)"/>
+            <path class="g-hi g-hi-2" d="M161 44 L153 222" filter="url(#f-soft2)"/>
+            <ellipse class="g-rim" cx="110" cy="28" rx="68" ry="7"/>
+            <ellipse class="g-rim-in" cx="110" cy="28" rx="61" ry="4"/>
+          </svg>
+        </span>
       </button>
 
       <svg class="tagline" viewBox="0 0 1000 420" role="img" aria-labelledby="hero-title" focusable="false">

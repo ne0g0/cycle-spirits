@@ -140,7 +140,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   --stage-aspect: .66;      /* stage height = W * aspect */
   --table-h: .42;           /* the table svg is W wide and .42W tall, pinned to the bottom */
   --disc-cy: .20;           /* disc centre, from the top of the table svg */
-  --ring-rx: .36; --ring-ry: .115;   /* the bottles' orbit */
+  --ring-rx: .32; --ring-ry: .115;   /* the settings' orbit */
   --bottle-h: .34;          /* front bottle height */
   --back-scale: .58;        /* size at the back of the table */
   --glass-h: .17;
@@ -155,37 +155,21 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .disc-shadow { fill: var(--disc-shadow); filter: url(#f-soft); transition: fill var(--turn) var(--ease); }
 .disc-rim { stroke: var(--line); stroke-width: 1.5; transition: stroke var(--turn) var(--ease); }
 
-.glass {
-  position: absolute; left: 50%; z-index: 3;
-  height: calc(var(--W, 1000px) * var(--glass-h));
-  aspect-ratio: 220 / 260;
-  /* base sits a touch below the disc centre */
-  bottom: calc(var(--table-h) * var(--W, 1000px) - var(--disc-cy) * var(--W, 1000px) - .02 * var(--W, 1000px));
-  transform: translateX(-50%) scale(.92);
-  opacity: 0; visibility: hidden;
-  transition: opacity .7s var(--ease), transform .7s var(--ease), visibility 0s .7s;
-  pointer-events: none;
-}
-.glass.is-on { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); transition: opacity .7s var(--ease) .25s, transform .7s var(--ease) .25s, visibility 0s; }
-.glass svg { width: 100%; height: 100%; display: block; overflow: visible; }
-.glass-body { fill: rgba(255, 255, 255, .14); stroke: var(--ink); stroke-opacity: .5; stroke-width: 2.5; }
-.glass-rim { stroke: var(--ink); stroke-opacity: .5; stroke-width: 2.5; }
-.glass-shine { stroke: rgba(255, 255, 255, .55); stroke-width: 3; }
-.glass-ice { fill: rgba(255, 255, 255, .42); stroke: rgba(255, 255, 255, .7); stroke-width: 1.5; }
-.glass-peel { stroke: var(--coral); }
-.glass-stem { stroke: var(--ink); stroke-opacity: .5; stroke-width: 7; }
-.glass-foot { fill: rgba(255, 255, 255, .18); stroke: var(--ink); stroke-opacity: .5; stroke-width: 2.5; }
-
-.bottle {
+/* A setting: the bottle and its glass, orbiting as one piece. */
+.setting {
   position: absolute; left: 0; top: 0; z-index: 2;
-  margin: 0; padding: 0; border: 0; background: none; cursor: pointer;
+  display: flex; align-items: flex-end; gap: calc(var(--W, 1000px) * .012);
+  margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer;
   transform-origin: 50% 100%;
   transform: translate(-200%, -200%);
   will-change: transform;
   opacity: 0;
-  border-radius: 6px;
+  border-radius: 8px;
 }
-.hero.is-ready .bottle { opacity: 1; }
+.hero.is-ready .setting { opacity: 1; }
+.setting[data-pos="front"] { cursor: default; }
+.setting:focus-visible { outline-offset: 10px; }
+.bottle { position: relative; display: block; flex: none; }
 .bottle img { height: calc(var(--W, 1000px) * var(--bottle-h)); width: auto; position: relative; z-index: 1; filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .22)); }
 .bottle::after {
   content: ""; position: absolute; left: 50%; bottom: -1.5%; width: 130%; height: 5%;
@@ -198,14 +182,35 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   font: italic 500 1.0625rem/1 var(--display); color: var(--ink);
   transition: color var(--turn) var(--ease);
 }
-.bottle[data-pos="front"] { cursor: default; }
-.bottle:focus-visible { outline-offset: 8px; }
+
+/* The glass: drawn for now. To use a photograph, put a transparent PNG of the empty glass behind the
+   liquid (see README) and keep the liquid, surface and stream layers; they sit on top of it. */
+.glass { position: relative; display: block; flex: none; height: calc(var(--W, 1000px) * var(--bottle-h) * var(--glass-ratio, .42)); aspect-ratio: 220 / 260; }
+.glass-rocks { --glass-ratio: .44; }
+.glass-cordial { --glass-ratio: .42; }
+.glass svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.g-shadow { fill: rgba(0, 0, 0, .38); }
+.g-tint { fill: rgba(28, 24, 19, .07); transition: fill var(--turn) var(--ease); }
+:root[data-theme="night"] .g-tint { fill: rgba(242, 235, 217, .05); }
+.g-edge { fill: none; stroke: color-mix(in srgb, var(--ink) 55%, transparent); stroke-width: 1.3; transition: stroke var(--turn) var(--ease); }
+.g-hi { fill: none; stroke: #fff; stroke-width: 6; stroke-opacity: .55; stroke-linecap: round; }
+.g-hi-2 { stroke-width: 3; stroke-opacity: .3; }
+.g-rim { fill: none; stroke: rgba(255, 255, 255, .85); stroke-width: 1.6; }
+.g-rim-in { fill: none; stroke: color-mix(in srgb, var(--ink) 32%, transparent); stroke-width: 1; transition: stroke var(--turn) var(--ease); }
+.g-foot { fill: url(#g-glass-base); }
+.g-stem, .g-foot, .g-base { stroke: color-mix(in srgb, var(--ink) 45%, transparent); stroke-width: 1; transition: stroke var(--turn) var(--ease); }
+.g-foot-edge { fill: none; stroke: rgba(255, 255, 255, .6); stroke-width: 1.2; }
+.ice rect { fill: rgba(255, 255, 255, .36); stroke: rgba(255, 255, 255, .8); stroke-width: 1.5; }
+.ice-hi { fill: none; stroke: rgba(255, 255, 255, .95); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.liquid-surface { fill: rgba(255, 255, 255, .38); }
+.stream-core { fill: rgba(255, 255, 255, .45); }
+.liquid, .liquid-surface, .ice { will-change: transform; }
 
 .tagline { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; z-index: 5; overflow: visible; pointer-events: none; }
 .tagline-text { font: italic 500 40px var(--display); fill: var(--ink); letter-spacing: .01em; transition: fill var(--turn) var(--ease); }
 
 /* The serve beside the front bottle */
-.serves { position: absolute; z-index: 6; left: var(--side); top: 50%; width: min(300px, 26%); transform: translateY(-20%); }
+.serves { position: absolute; z-index: 6; left: var(--side); top: 56%; width: min(300px, 26%); transform: translateY(-20%); }
 .serve {
   position: absolute; inset: 0 auto auto 0; width: 100%;
   padding: 22px 24px; border-radius: 2px;
@@ -262,7 +267,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
-  .stage { --ring-rx: .37; --bottle-h: .36; }
+  .stage { --ring-rx: .33; --bottle-h: .36; }
   .serves { width: min(260px, 28%); }
 }
 @media (max-width: 760px) {
@@ -274,7 +279,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   .brand .word-cycle, .brand .word-spirits { width: 72px; }
   .hero { grid-template-rows: auto auto auto; align-content: start; row-gap: 20px; padding-bottom: 28px; }
   .stage {
-    --stage-aspect: .82; --ring-rx: .36; --ring-ry: .14; --bottle-h: .46; --back-scale: .6; --glass-h: .23;
+    --stage-aspect: .82; --ring-rx: .30; --ring-ry: .14; --bottle-h: .46; --back-scale: .6; --glass-h: .23;
     --sky-cy: .42; --sky-ry: .40;
     width: 100%;
   }
@@ -293,6 +298,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  html, body, .eyebrow, .serve, .glass, .bottle-name, .tagline-text, .recipe, .story-text, .story-field::after, .story-field::before, .site-line, .site-foot, .disc-hi, .disc-lo, .disc-shadow, .disc-rim, .body { transition-duration: .01s !important; transition-delay: 0s !important; }
+  html, body, .eyebrow, .serve, .bottle-name, .tagline-text, .recipe, .story-text, .story-field::after, .story-field::before, .site-line, .site-foot, .disc-hi, .disc-lo, .disc-shadow, .disc-rim, .body { transition-duration: .01s !important; transition-delay: 0s !important; }
   .float, .story-bg { transform: none !important; }
 }
